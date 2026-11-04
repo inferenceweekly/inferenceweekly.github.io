@@ -11,17 +11,22 @@ Built with [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)
 | When | What happens |
 |---|---|
 | **Friday 09:00 (Istanbul)** | `curate.yml` scans every source in `curation/sources.yml` and opens a GitHub issue labelled `curation` with a checklist of the week's candidates |
-| **Weekend** | Tick the items you want; add anything you found yourself |
-| **Sunday** | `python scripts/new_issue.py "This week's theme"` → fill in the new file in `docs/issues/YYYY/MM/` → commit and push |
-| **On push** | `deploy.yml` publishes the site and RSS feed; `buttondown-draft.yml` creates a **draft** email in Buttondown |
+| **During the week** | Tick the items you want, and paste any extra links (articles, videos, repos) as comments on that issue |
+| **When you're done picking** | *Actions → Compile issue → Run workflow*: builds the issue file from your ticks and comment links, sorted into Read / Watch / Repos, and opens a pull request |
+| **In the pull request** | Replace every `TODO:` with your own line, remove or reorder items, then merge |
+| **On merge** | The site and RSS feed update, a Buttondown **draft** is created, and the curation issue closes |
 | **Monday morning** | Review the draft in Buttondown and press send |
+
+The site refuses to publish, and no email draft is created, while an issue still contains `TODO:`.
+You can still write an issue by hand with `python scripts/new_issue.py "Title"`.
 
 ## One-time setup
 
 1. **Push this repo** to `inferenceweekly/inferenceweekly.github.io` (branch `main`).
 2. **Enable Pages:** *Settings → Pages → Source: GitHub Actions*.
-3. **Allow the curation job to open issues:** *Settings → Actions → General →
-   Workflow permissions → Read and write permissions*.
+3. **Let workflows open issues and pull requests:** *Settings → Actions → General →
+   Workflow permissions* → **Read and write permissions**, and tick
+   **Allow GitHub Actions to create and approve pull requests**.
 4. **Buttondown:** create an account with the username `inferenceweekly`
    (this makes the signup form on the home page work). Then
    *Settings → API* → copy the key → add it to the repo as the secret
@@ -52,8 +57,9 @@ curation/sources.yml     feeds, keywords and repos to watch
 scripts/
   new_issue.py           create the next numbered issue
   curate.py              collect candidates from feeds and GitHub releases
+  compile_issue.py       turn ticked items + comment links into a draft issue
   buttondown_draft.py    turn an issue into a Buttondown draft
-.github/workflows/       deploy, weekly curation, Buttondown draft
+.github/workflows/       deploy, weekly curation, compile issue, Buttondown draft
 hooks/issues_nav.py      builds the year/month/date sidebar automatically
 ```
 

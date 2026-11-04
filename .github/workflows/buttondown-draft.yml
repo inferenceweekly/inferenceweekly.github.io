@@ -48,6 +48,10 @@ jobs:
             echo "::error::File not found: $FILE"
             exit 1
           fi
+          if grep -n "TODO:" "$FILE"; then
+            echo "::error::$FILE still has TODO placeholders."
+            exit 1
+          fi
           python scripts/buttondown_draft.py "$FILE"
 
       - name: Draft new issues (push)
@@ -55,4 +59,7 @@ jobs:
         run: |
           git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'docs/issues/*/*/*.md' > new_posts.txt || true
           if [ ! -s new_posts.txt ]; then echo "No new issue files."; exit 0; fi
-          while read -r f; do python scripts/buttondown_draft.py "$f"; done < new_posts.txt
+          while read -r f; do
+            if grep -q "TODO:" "$f"; then echo "Skipping $f: still has TODO placeholders."; continue; fi
+            python scripts/buttondown_draft.py "$f"
+          done < new_posts.txt

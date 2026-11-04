@@ -1,0 +1,98 @@
+name: Compile issue
+
+# Turns the curation issue into a draft newsletter issue:
+#   ticked checkboxes + links posted in the comments
+#   -> docs/issues/YYYY/MM/YYYY-MM-DD.md, sorted into Read / Watch / Repos
+#   -> opened as a pull request for you to add notes, review and merge.
+# Merging the PR publishes the site and creates the Buttondown draft.
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: "Issue title / theme"
+        default: "This week in inference"
+        required: true
+      date:
+        description: "Publish date YYYY-MM-DD (empty = next Monday)"
+        required: false
+      curation_issue:
+        description: "Curation issue number (empty = latest open one)"
+        required: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml requests
+
+      - name: Find the curation issue
+        id: source
+        env:
+          WANTED: ${{ github.event.inputs.curation_issue }}
+        run: |
+          if [ -n "$WANTED" ]; then
+            number="$WANTED"
+          else
+            number=$(gh api "repos/$REPO/issues?labels=curation&state=open&per_page=1" --jq '.[0].number // empty')
+          fi
+          if [ -z "$number" ]; then
+            echo "::error::No open issue with the 'curation' label was found."
+            exit 1
+          fi
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+          gh api "repos/$REPO/issues/$number" --jq .body > body.md
+          gh api --paginate "repos/$REPO/issues/$number/comments" | jq -s 'add // []' > comments.json
+          echo "Using curation issue #$number"
+
+      - name: Build the draft issue
+        id: build
+        env:
+          TITLE: ${{ github.event.inputs.title }}
+          DATE: ${{ github.event.inputs.date }}
+        run: |
+          args=(--body body.md --comments comments.json --title "$TITLE")
+          [ -n "$DATE" ] && args+=(--date "$DATE")
+          file=$(python scripts/compile_issue.py "${args[@]}")
+          echo "file=$file" >> "$GITHUB_OUTPUT"
+          echo "Created $file"
+
+      - name: Open pull request
+        env:
+          FILE: ${{ steps.build.outputs.file }}
+          NUMBER: ${{ steps.source.outputs.number }}
+          TITLE: ${{ github.event.inputs.title }}
+        run: |
+          branch="issue/$(basename "$FILE" .md)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add "$FILE"
+          git commit -m "Draft issue: $TITLE"
+          git push -u origin "$branch"
+          cat > pr_body.md <<EOF
+          Draft built from curation issue #$NUMBER: the ticked items plus the links posted in its comments.
+
+          **Before merging**
+          - Replace every \`TODO:\` with your own line (the site will not publish while any remain).
+          - Remove anything you changed your mind about, and reorder if you like.
+
+          **After merging** the site goes live and a Buttondown draft is created. Review it there and press send.
+
+          Closes #$NUMBER
+          EOF
+          sed -i 's/^          //' pr_body.md
+          url=$(gh pr create --base main --head "$branch" --title "Issue: $TITLE ($(basename "$FILE" .md))" --body-file pr_body.md)
+          gh issue comment "$NUMBER" --body "Compiled into $url"
+          echo "### Pull request opened: $url" >> "$GITHUB_STEP_SUMMARY"

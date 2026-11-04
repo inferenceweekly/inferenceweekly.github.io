@@ -85,8 +85,9 @@ def render(sections: dict[str, list], errors: list[str], since: dt.datetime) -> 
         f"Candidates published since **{since.date().isoformat()}** "
         f"(generated {today}, {total} items).",
         "",
-        "Tick what goes into the next issue, then run "
-        "`python scripts/new_issue.py \"<title>\"` and write it up.",
+        "Tick what goes into the next issue and paste any extra links as comments. "
+        "When you're done, run **Actions → Compile issue → Run workflow**: it opens a "
+        "pull request with the draft issue for you to finish.",
         "",
     ]
     for heading, groups in sections.items():

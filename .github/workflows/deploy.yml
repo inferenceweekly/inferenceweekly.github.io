@@ -25,6 +25,12 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
+      - name: Block unfinished issues
+        run: |
+          if grep -rn "TODO:" docs/issues; then
+            echo "::error::An issue still has TODO placeholders. Fill them in before publishing."
+            exit 1
+          fi
       - run: pip install -r requirements.txt
       - run: mkdocs build --strict
       - uses: actions/upload-pages-artifact@v5

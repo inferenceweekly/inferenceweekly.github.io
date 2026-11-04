@@ -3,11 +3,20 @@ name: Create Buttondown draft
 # When a new issue file lands on main, create a DRAFT email in Buttondown with
 # the same content. You review and press send in Buttondown; nothing is sent
 # automatically. Requires the repo secret BUTTONDOWN_API_KEY; skips if unset.
+#
+# You can also run it by hand (Actions > Create Buttondown draft > Run workflow)
+# to draft any existing issue, e.g. to test the Buttondown connection.
 on:
   push:
     branches: [main]
     paths:
       - "docs/issues/**.md"
+  workflow_dispatch:
+    inputs:
+      file:
+        description: "Issue file to draft"
+        default: "docs/issues/2026/11/2026-11-04.md"
+        required: true
 
 permissions:
   contents: read
@@ -25,8 +34,24 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install pyyaml requests
-      - name: Draft new issues
-        if: env.BUTTONDOWN_API_KEY != ''
+
+      - name: Draft the chosen issue (manual run)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          FILE: ${{ github.event.inputs.file }}
+        run: |
+          if [ -z "$BUTTONDOWN_API_KEY" ]; then
+            echo "::error::The BUTTONDOWN_API_KEY secret is not set in this repository."
+            exit 1
+          fi
+          if [ ! -f "$FILE" ]; then
+            echo "::error::File not found: $FILE"
+            exit 1
+          fi
+          python scripts/buttondown_draft.py "$FILE"
+
+      - name: Draft new issues (push)
+        if: github.event_name == 'push' && env.BUTTONDOWN_API_KEY != ''
         run: |
           git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'docs/issues/*/*/*.md' > new_posts.txt || true
           if [ ! -s new_posts.txt ]; then echo "No new issue files."; exit 0; fi

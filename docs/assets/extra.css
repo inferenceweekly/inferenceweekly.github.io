@@ -1,3 +1,54 @@
+/* ------------------------------------------------------------------
+   Palette — green / sage / pink, inspired by Baseten's brand palette.
+   Values are approximations: replace the hex codes in this block with
+   exact ones and everything else follows.
+   ------------------------------------------------------------------ */
+:root {
+  --iw-green:       #1fc77e;  /* bright brand green: links, buttons   */
+  --iw-green-ink:   #12804f;  /* darker green for text on light bg    */
+  --iw-pink:        #ff6fb1;  /* accent: hover states, highlights     */
+  --iw-dark-green:  #0f2e22;  /* header / dark surfaces               */
+  --iw-dark-sage:   #4f6b5d;  /* secondary text                       */
+  --iw-sage:        #a9bcb0;  /* borders, rules                       */
+  --iw-light-sage:  #eef3ef;  /* light background tint                */
+}
+
+/* Light mode */
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color:        var(--iw-dark-green);
+  --md-primary-fg-color--light: var(--iw-dark-sage);
+  --md-primary-fg-color--dark:  #0a2018;
+  --md-primary-bg-color:        #ffffff;
+  --md-accent-fg-color:         var(--iw-pink);
+  --md-typeset-a-color:         var(--iw-green-ink);
+  --md-default-bg-color:        #ffffff;
+  --md-code-bg-color:           var(--iw-light-sage);
+  --md-footer-bg-color:         var(--iw-dark-green);
+}
+
+/* Dark mode */
+[data-md-color-scheme="slate"] {
+  --md-hue: 155;
+  --md-primary-fg-color:        var(--iw-dark-green);
+  --md-primary-fg-color--light: var(--iw-dark-sage);
+  --md-primary-fg-color--dark:  #0a2018;
+  --md-primary-bg-color:        #ffffff;
+  --md-accent-fg-color:         var(--iw-pink);
+  --md-typeset-a-color:         var(--iw-green);
+  --md-default-bg-color:        #0c1a14;
+  --md-footer-bg-color:         #08130e;
+}
+
+/* Header gets a thin brand-green underline */
+.md-header {
+  border-bottom: 2px solid var(--iw-green);
+}
+
+.md-typeset hr {
+  border-bottom-color: var(--iw-sage);
+}
+
+/* Subscribe form */
 .iw-subscribe {
   display: flex;
   flex-wrap: wrap;
@@ -9,24 +60,29 @@
 .iw-subscribe input[type="email"] {
   flex: 1 1 16rem;
   padding: 0.6rem 0.8rem;
-  border: 1px solid var(--md-default-fg-color--lighter);
+  border: 1px solid var(--iw-sage);
   border-radius: 0.3rem;
   background: var(--md-default-bg-color);
   color: var(--md-default-fg-color);
   font-size: 0.8rem;
 }
 
+.iw-subscribe input[type="email"]:focus {
+  outline: 2px solid var(--iw-green);
+  border-color: transparent;
+}
+
 .iw-subscribe input[type="submit"] {
   padding: 0.6rem 1.1rem;
   border: none;
   border-radius: 0.3rem;
-  background: var(--md-primary-fg-color);
-  color: var(--md-primary-bg-color);
+  background: var(--iw-green);
+  color: var(--iw-dark-green);
   font-weight: 700;
   font-size: 0.8rem;
   cursor: pointer;
 }
 
 .iw-subscribe input[type="submit"]:hover {
-  background: var(--md-accent-fg-color);
+  background: var(--iw-pink);
 }

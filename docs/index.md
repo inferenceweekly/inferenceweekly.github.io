@@ -30,10 +30,8 @@ Browse the [issue archive](issues/index.md) — or start with the most recent on
 
 | Section | What's in it |
 |---|---|
-| :material-star: **Top story** | The one thing worth your time this week, with commentary |
 | :material-book-open-variant: **Read** | Articles, engineering blogs and papers |
 | :material-youtube: **Watch** | Conference talks, deep dives, office hours |
 | :material-github: **Repos** | New projects and notable releases |
-| :material-server: **From production** | Notes on running inference for real — SLOs, capacity, incidents |
 
 Got something that belongs here? [Submit a link](submit.md).

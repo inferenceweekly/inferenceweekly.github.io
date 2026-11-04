@@ -8,6 +8,7 @@ Issues live at docs/issues/YYYY/MM/YYYY-MM-DD.md. This hook turns them into
         2026-11-16
         2026-11-09
     ...
+    Books
     Submit a link
     About
 
@@ -48,7 +49,7 @@ def on_config(config, **kwargs):
             {str(year): [{calendar.month_name[m]: entries} for m, entries in months.items()]}
         )
 
-    nav += [{"Submit a link": "submit.md"}, {"About": "about.md"}]
+    nav += [{"Books": "books.md"}, {"Submit a link": "submit.md"}, {"About": "about.md"}]
     config["nav"] = nav
 
     _latest.clear()

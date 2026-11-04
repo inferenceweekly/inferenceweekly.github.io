@@ -7,7 +7,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "docs/issues/posts/**.md"
+      - "docs/issues/**.md"
 
 permissions:
   contents: read
@@ -28,6 +28,6 @@ jobs:
       - name: Draft new issues
         if: env.BUTTONDOWN_API_KEY != ''
         run: |
-          git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'docs/issues/posts/*.md' > new_posts.txt || true
+          git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'docs/issues/*/*/*.md' > new_posts.txt || true
           if [ ! -s new_posts.txt ]; then echo "No new issue files."; exit 0; fi
           while read -r f; do python scripts/buttondown_draft.py "$f"; done < new_posts.txt

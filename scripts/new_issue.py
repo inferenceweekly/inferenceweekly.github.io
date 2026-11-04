@@ -12,7 +12,7 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-POSTS = ROOT / "docs" / "issues" / "posts"
+ISSUES = ROOT / "docs" / "issues"
 TEMPLATE = ROOT / "templates" / "issue.md"
 
 
@@ -24,8 +24,8 @@ def next_monday(today: dt.date) -> dt.date:
 def next_number() -> int:
     numbers = [
         int(m.group(1))
-        for p in POSTS.glob("*.md")
-        if (m := re.search(r"issue-(\d+)\.md$", p.name))
+        for p in ISSUES.rglob("*.md")
+        if (m := re.search(r"^number:\s*(\d+)\s*$", p.read_text(encoding="utf-8"), re.M))
     ]
     return max(numbers, default=-1) + 1
 
@@ -38,16 +38,15 @@ def main() -> int:
 
     date = dt.date.fromisoformat(args.date) if args.date else next_monday(dt.date.today())
     number = next_number()
-    padded = f"{number:03d}"
-    target = POSTS / f"{date.isoformat()}-issue-{padded}.md"
+    target = ISSUES / f"{date:%Y}" / f"{date:%m}" / f"{date.isoformat()}.md"
     if target.exists():
         print(f"Already exists: {target}", file=sys.stderr)
         return 1
 
     body = TEMPLATE.read_text(encoding="utf-8").format(
-        date=date.isoformat(), number=number, number_padded=padded, title=args.title
+        date=date.isoformat(), number=number, title=args.title
     )
-    POSTS.mkdir(parents=True, exist_ok=True)
+    target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(body, encoding="utf-8")
     print(target.relative_to(ROOT))
     return 0

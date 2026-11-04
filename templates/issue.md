@@ -1,16 +1,12 @@
 ---
 date: {date}
-slug: issue-{number_padded}
+number: {number}
 title: "#{number}: {title}"
-categories:
-  - Weekly
 ---
 
 # #{number}: {title}
 
 One-sentence summary of this week's theme.
-
-<!-- more -->
 
 ## :material-book-open-variant: Read
 
@@ -29,4 +25,4 @@ One-sentence summary of this week's theme.
 
 ---
 
-*Found something for next week? [Submit a link](../../submit.md) or reply to this email.*
+*Found something for next week? [Submit a link](../../../submit.md) or reply to this email.*

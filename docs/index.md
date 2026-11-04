@@ -1,6 +1,5 @@
 ---
 hide:
-  - navigation
   - toc
 ---
 
@@ -22,9 +21,11 @@ on-call reality behind them.
 Prefer a feed reader? Use the [RSS feed](https://inferenceweekly.github.io/feed_rss_created.xml).
 No spam, one email a week, unsubscribe anytime.
 
-## Latest issues
+## Latest issue
 
-Browse the [issue archive](issues/index.md), or start with the most recent one.
+{{ latest_issue }}
+
+Older issues are listed by date in the menu on the left.
 
 ## What you'll find in each issue
 

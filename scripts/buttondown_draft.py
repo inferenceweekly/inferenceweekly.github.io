@@ -2,10 +2,10 @@
 """Create a Buttondown DRAFT email from an issue Markdown file.
 
 Usage (needs BUTTONDOWN_API_KEY in the environment):
-    python scripts/buttondown_draft.py docs/issues/posts/2026-11-16-issue-001.md
+    python scripts/buttondown_draft.py docs/issues/2026/11/2026-11-16.md
 
 The draft links back to the web version and strips site-only syntax
-(front matter, the <!-- more --> marker, Material icons, relative links).
+(front matter, Material icons, relative links).
 """
 import os
 import pathlib
@@ -27,13 +27,13 @@ def split_front_matter(text: str) -> tuple[dict, str]:
 
 
 def web_url(meta: dict) -> str:
-    date = str(meta["date"]).replace("-", "/")
-    return f"{SITE}/issues/{date}/{meta['slug']}/"
+    date = str(meta["date"])
+    year, month, _ = date.split("-")
+    return f"{SITE}/issues/{year}/{month}/{date}/"
 
 
 def to_email(body: str, url: str) -> str:
     body = re.sub(r"^# .*\n+", "", body.lstrip(), count=1)          # title becomes the subject
-    body = body.replace("<!-- more -->", "")
     body = re.sub(r":material-[a-z0-9-]+:\s*", "", body)    # site-only icons
     body = re.sub(r"\]\((?:\.\./)+submit\.md\)", f"]({SITE}/submit/)", body)
     header = f"*[Read this issue on the web]({url})*\n\n"

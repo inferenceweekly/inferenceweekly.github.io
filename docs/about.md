@@ -15,7 +15,7 @@ material on that side of the stack.
 
 ## Curator
 
-Curated by **Atil Sensalduz**, an SRE working on AI and data platforms.
+Curated by **[Atil Sensalduz](https://www.linkedin.com/in/atilerensensalduz/)**, an SRE working on AI and data platforms.
 Opinions are my own.
 
 ## Format

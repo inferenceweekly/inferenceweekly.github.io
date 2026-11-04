@@ -183,3 +183,44 @@
     width: 4.8rem;
   }
 }
+
+/* Featured book: highlighted row with a thank-you note */
+.iw-book--featured {
+  margin: 0 -1rem;
+  padding: 1.1rem 1rem;
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--iw-green) 9%, transparent);
+  border: 1px solid color-mix(in srgb, var(--iw-green) 35%, transparent);
+}
+
+.iw-book--featured + .iw-book .iw-book__body {
+  border-top: none;
+}
+
+.md-typeset .iw-book__thanks {
+  margin: 0.7rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--md-default-fg-color);
+}
+
+.iw-badge {
+  display: inline-block;
+  margin-right: 0.35rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: 1rem;
+  background: var(--iw-pink);
+  color: var(--iw-dark-green);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  vertical-align: 0.05rem;
+}
+
+@media (max-width: 30em) {
+  .iw-book--featured {
+    margin: 0 -0.6rem;
+    padding: 1rem 0.6rem;
+  }
+}

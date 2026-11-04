@@ -29,6 +29,17 @@ No cover yet? Use this line instead of the <img ...> line:
 
 <div class="iw-books">
 
+<div class="iw-book iw-book--featured">
+  <div class="iw-cover iw-cover--placeholder"><span>Inference Engineering</span></div>
+  <div class="iw-book__body">
+    <p class="iw-book__meta">Baseten Books · February 2026 · Free</p>
+    <a class="iw-book__title" href="https://www.baseten.com/inference-engineering/">Inference Engineering</a>
+    <p class="iw-book__authors">by Philip Kiely</p>
+    <p class="iw-book__note">A map of the whole field: the runtime, infrastructure and tooling behind serving generative AI models in production, from GPUs and kernels to inference engines and Kubernetes. Free to read online.</p>
+    <p class="iw-book__thanks"><span class="iw-badge">Special thanks</span> To Philip Kiely and Baseten for writing this book and making it free for everyone. It was a big inspiration for Inference Weekly.</p>
+  </div>
+</div>
+
 <div class="iw-book">
   <div class="iw-cover iw-cover--placeholder"><span>Hands-On LLM Serving and Optimization</span></div>
   <div class="iw-book__body">

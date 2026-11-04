@@ -1,6 +1,6 @@
 site_name: Inference Weekly
 site_url: https://inferenceweekly.github.io/
-site_description: A weekly, hand-curated digest of inference engineering — articles, talks, papers and repos on serving LLMs fast, cheap and reliably.
+site_description: A weekly, hand-curated digest of inference engineering: articles, talks, papers and repos on serving LLMs fast, cheap and reliably.
 site_author: Atil Sensalduz
 copyright: Copyright &copy; Inference Weekly
 
@@ -77,7 +77,7 @@ extra:
       name: RSS feed
     - icon: fontawesome/solid/envelope
       link: https://buttondown.com/inferenceweekly
-      name: Subscribe by email
+      name: Subscribe
     - icon: fontawesome/brands/github
       link: https://github.com/inferenceweekly
       name: GitHub

@@ -32,6 +32,6 @@ jobs:
         run: |
           gh label create curation --color 5319E7 --description "Weekly link candidates" 2>/dev/null || true
           gh issue create \
-            --title "Candidates — week of $(date -u +%Y-%m-%d)" \
+            --title "Candidates: week of $(date -u +%Y-%m-%d)" \
             --label curation \
             --body-file candidates.md

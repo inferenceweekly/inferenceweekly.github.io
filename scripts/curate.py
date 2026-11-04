@@ -111,7 +111,7 @@ def render(sections: dict[str, list], errors: list[str], since: dt.datetime) -> 
         out.append("")
         out.append("</details>")
     if total == 0:
-        out.append("_No new items found — check the failed feeds above._")
+        out.append("_No new items found. Check the failed feeds above._")
     return "\n".join(out) + "\n"
 
 
@@ -136,10 +136,10 @@ def main() -> int:
         for heading, sources in feed_groups.items():
             results = list(pool.map(lambda s: fetch(s, since, keywords), sources))
             sections[heading] = [(s, items) for s, items, _ in results]
-            errors += [f"{s['name']} — {e}" for s, _, e in results if e]
+            errors += [f"{s['name']}: {e}" for s, _, e in results if e]
         results = list(pool.map(lambda r: fetch_releases(r, since), config.get("repos") or []))
         sections["Repo releases"] = [(s, items) for s, items, _ in results]
-        errors += [f"{s['name']} — {e}" for s, _, e in results if e]
+        errors += [f"{s['name']}: {e}" for s, _, e in results if e]
 
     markdown = render(sections, errors, since)
     if args.output:

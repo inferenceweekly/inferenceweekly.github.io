@@ -8,7 +8,7 @@ hide:
 
 **A weekly, hand-curated digest of inference engineering.**
 Every Monday: the best articles, talks, papers and GitHub repos on serving models
-in production — fast, cheap and reliable. Batching, KV cache, quantization,
+in production: fast, cheap and reliable. Batching, KV cache, quantization,
 speculative decoding, disaggregated serving, GPUs, Kubernetes, SLOs and the
 on-call reality behind them.
 
@@ -16,7 +16,7 @@ on-call reality behind them.
 
 <form class="iw-subscribe" action="https://buttondown.com/api/emails/embed-subscribe/inferenceweekly" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.com/inferenceweekly', 'popupwindow')">
   <input type="email" name="email" id="bd-email" placeholder="you@example.com" required aria-label="Email address" />
-  <input type="submit" value="Subscribe by email" />
+  <input type="submit" value="Subscribe" />
 </form>
 
 Prefer a feed reader? Use the [RSS feed](https://inferenceweekly.github.io/feed_rss_created.xml).
@@ -24,7 +24,7 @@ No spam, one email a week, unsubscribe anytime.
 
 ## Latest issues
 
-Browse the [issue archive](issues/index.md) — or start with the most recent one.
+Browse the [issue archive](issues/index.md), or start with the most recent one.
 
 ## What you'll find in each issue
 

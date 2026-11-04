@@ -1,7 +1,7 @@
 name: Create Buttondown draft
 
 # When a new issue file lands on main, create a DRAFT email in Buttondown with
-# the same content. You review and press send in Buttondown — nothing is sent
+# the same content. You review and press send in Buttondown; nothing is sent
 # automatically. Requires the repo secret BUTTONDOWN_API_KEY; skips if unset.
 on:
   push:

@@ -4,7 +4,7 @@
 #                  (use for broad feeds like NVIDIA, Hugging Face, arXiv, HN)
 # filter: false -> keep everything (use for inference-only sources)
 #
-# Feed URLs marked "verify" are best guesses — the weekly job reports any feed
+# Feed URLs marked "verify" are best guesses; the weekly job reports any feed
 # that fails so you can fix or remove it.
 
 keywords:

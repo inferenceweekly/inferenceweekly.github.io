@@ -7,11 +7,11 @@ material on that side of the stack.
 
 ## Scope
 
-- **Serving engines & runtimes** — vLLM, SGLang, TensorRT-LLM, llama.cpp, Dynamo, llm-d
-- **Optimization** — batching, KV cache management, quantization, speculative decoding, kernels
-- **Infrastructure** — GPUs and accelerators, Kubernetes, autoscaling, disaggregated prefill/decode
-- **Operations** — observability, SLOs, capacity planning, cost per token, incidents
-- **Economics** — build vs. buy, hardware lifecycles, pricing
+- **Serving engines & runtimes**: vLLM, SGLang, TensorRT-LLM, llama.cpp, Dynamo, llm-d
+- **Optimization**: batching, KV cache management, quantization, speculative decoding, kernels
+- **Infrastructure**: GPUs and accelerators, Kubernetes, autoscaling, disaggregated prefill/decode
+- **Operations**: observability, SLOs, capacity planning, cost per token, incidents
+- **Economics**: build vs. buy, hardware lifecycles, pricing
 
 ## Curator
 

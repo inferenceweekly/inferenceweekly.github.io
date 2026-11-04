@@ -1,0 +1,30 @@
+name: Link suggestion
+description: Suggest an article, talk, paper or repo for Inference Weekly
+title: "[Link] "
+labels: [suggestion]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Link
+      placeholder: https://
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Type
+      options: [Article, Video / talk, Paper, GitHub repo, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is it worth including?
+      description: One or two sentences is plenty.
+  - type: checkboxes
+    id: affiliation
+    attributes:
+      label: Disclosure
+      options:
+        - label: I'm the author or work for the company behind this

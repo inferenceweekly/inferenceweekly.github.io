@@ -1,0 +1,99 @@
+# Sources scanned weekly by scripts/curate.py.
+#
+# filter: true  -> only keep items whose title/summary match `keywords`
+#                  (use for broad feeds like NVIDIA, Hugging Face, arXiv, HN)
+# filter: false -> keep everything (use for inference-only sources)
+#
+# Feed URLs marked "verify" are best guesses — the weekly job reports any feed
+# that fails so you can fix or remove it.
+
+keywords:
+  - inference
+  - serving
+  - vllm
+  - sglang
+  - tensorrt
+  - triton
+  - kv cache
+  - kv-cache
+  - prefill
+  - decode
+  - speculative
+  - quantiz
+  - fp8
+  - fp4
+  - int4
+  - batching
+  - throughput
+  - latency
+  - ttft
+  - tokens per second
+  - disaggregat
+  - paged attention
+  - flashattention
+  - flashinfer
+  - kernel
+  - cuda
+  - gpu
+  - llama.cpp
+  - llm-d
+  - dynamo
+  - kserve
+  - autoscal
+
+articles:
+  - name: vLLM Blog
+    url: https://blog.vllm.ai/feed.xml          # verify
+    filter: false
+  - name: LMSYS / SGLang Blog
+    url: https://lmsys.org/rss.xml              # verify
+    filter: false
+  - name: PyTorch Blog
+    url: https://pytorch.org/feed/              # verify
+    filter: true
+  - name: Hugging Face Blog
+    url: https://huggingface.co/blog/feed.xml
+    filter: true
+  - name: NVIDIA Technical Blog
+    url: https://developer.nvidia.com/blog/feed
+    filter: true
+  - name: The Pragmatic Engineer
+    url: https://newsletter.pragmaticengineer.com/feed
+    filter: true
+  - name: SemiAnalysis
+    url: https://newsletter.semianalysis.com/feed   # verify
+    filter: true
+  - name: Hacker News (50+ points)
+    url: https://hnrss.org/newest?q=vllm+OR+sglang+OR+%22llm+inference%22+OR+%22inference+engine%22&points=50
+    filter: false
+
+papers:
+  - name: arXiv cs.DC
+    url: https://rss.arxiv.org/rss/cs.DC
+    filter: true
+  - name: arXiv cs.LG
+    url: https://rss.arxiv.org/rss/cs.LG
+    filter: true
+
+# YouTube: every channel has a feed at
+#   https://www.youtube.com/feeds/videos.xml?channel_id=<CHANNEL_ID>
+# Find the ID on the channel page (About -> Share channel -> Copy channel ID)
+# and add entries like the commented example below. Good channels to add:
+# GPU MODE, vLLM, PyTorch, Anyscale (Ray Summit), CNCF, NVIDIA Developer.
+videos: []
+#  - name: GPU MODE
+#    url: https://www.youtube.com/feeds/videos.xml?channel_id=REPLACE_ME
+#    filter: false
+
+# GitHub releases (Atom feed per repo). Pre-releases/nightlies are skipped.
+repos:
+  - vllm-project/vllm
+  - sgl-project/sglang
+  - NVIDIA/TensorRT-LLM
+  - ai-dynamo/dynamo
+  - llm-d/llm-d
+  - kserve/kserve
+  - ggml-org/llama.cpp
+  - flashinfer-ai/flashinfer
+  - vllm-project/production-stack
+  - triton-lang/triton

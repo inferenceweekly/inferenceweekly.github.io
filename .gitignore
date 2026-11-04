@@ -1,0 +1,6 @@
+site/
+.cache/
+__pycache__/
+candidates.md
+new_posts.txt
+.venv/

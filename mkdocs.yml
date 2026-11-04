@@ -1,0 +1,93 @@
+site_name: Inference Weekly
+site_url: https://inferenceweekly.github.io/
+site_description: A weekly, hand-curated digest of inference engineering — articles, talks, papers and repos on serving LLMs fast, cheap and reliably.
+site_author: Atil Sensalduz
+copyright: Copyright &copy; Inference Weekly
+
+repo_url: https://github.com/inferenceweekly/inferenceweekly.github.io
+repo_name: inferenceweekly/inferenceweekly.github.io
+edit_uri: ""
+
+theme:
+  name: material
+  language: en
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  icon:
+    logo: material/lightning-bolt
+  features:
+    - navigation.tabs
+    - navigation.top
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - content.action.edit
+
+plugins:
+  - search
+  - blog:
+      blog_dir: issues
+      blog_toc: true
+      post_date_format: long
+      post_url_format: "{date}/{slug}"
+      post_readtime: true
+      archive_name: Archive
+      archive_date_format: MMMM yyyy
+      categories_name: Topics
+      pagination_per_page: 10
+  - rss:
+      match_path: "issues/posts/.*"
+      date_from_meta:
+        as_creation: date
+      categories:
+        - categories
+      comments_path: ""
+      feed_ttl: 1440
+      image: ""
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra:
+  social:
+    - icon: fontawesome/solid/rss
+      link: /feed_rss_created.xml
+      name: RSS feed
+    - icon: fontawesome/solid/envelope
+      link: https://buttondown.com/inferenceweekly
+      name: Subscribe by email
+    - icon: fontawesome/brands/github
+      link: https://github.com/inferenceweekly
+      name: GitHub
+
+extra_css:
+  - assets/extra.css
+
+nav:
+  - Home: index.md
+  - Issues:
+      - issues/index.md
+  - Submit a link: submit.md
+  - About: about.md

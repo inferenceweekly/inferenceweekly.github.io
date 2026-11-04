@@ -1,0 +1,32 @@
+.iw-subscribe {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  max-width: 32rem;
+}
+
+.iw-subscribe input[type="email"] {
+  flex: 1 1 16rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-radius: 0.3rem;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  font-size: 0.8rem;
+}
+
+.iw-subscribe input[type="submit"] {
+  padding: 0.6rem 1.1rem;
+  border: none;
+  border-radius: 0.3rem;
+  background: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.iw-subscribe input[type="submit"]:hover {
+  background: var(--md-accent-fg-color);
+}

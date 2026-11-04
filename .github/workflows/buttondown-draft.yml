@@ -1,0 +1,33 @@
+name: Create Buttondown draft
+
+# When a new issue file lands on main, create a DRAFT email in Buttondown with
+# the same content. You review and press send in Buttondown — nothing is sent
+# automatically. Requires the repo secret BUTTONDOWN_API_KEY; skips if unset.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/issues/posts/**.md"
+
+permissions:
+  contents: read
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    env:
+      BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml requests
+      - name: Draft new issues
+        if: env.BUTTONDOWN_API_KEY != ''
+        run: |
+          git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'docs/issues/posts/*.md' > new_posts.txt || true
+          if [ ! -s new_posts.txt ]; then echo "No new issue files."; exit 0; fi
+          while read -r f; do python scripts/buttondown_draft.py "$f"; done < new_posts.txt

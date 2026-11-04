@@ -7,9 +7,7 @@ hide:
 
 **A weekly, hand-curated digest of inference engineering.**
 Every Monday: the best articles, talks, papers and GitHub repos on serving models
-in production: fast, cheap and reliable. Batching, KV cache, quantization,
-speculative decoding, disaggregated serving, GPUs, Kubernetes, SLOs and the
-on-call reality behind them.
+in production: fast, cheap and reliable.
 
 ## Subscribe
 
@@ -26,13 +24,5 @@ No spam, one email a week, unsubscribe anytime.
 {{ latest_issue }}
 
 Older issues are listed by date in the menu on the left.
-
-## What you'll find in each issue
-
-| Section | What's in it |
-|---|---|
-| :material-book-open-variant: **Read** | Articles, engineering blogs and papers |
-| :material-youtube: **Watch** | Conference talks, deep dives, office hours |
-| :material-github: **Repos** | New projects and notable releases |
 
 Got something that belongs here? [Submit a link](submit.md).

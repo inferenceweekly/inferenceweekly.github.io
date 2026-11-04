@@ -5,8 +5,8 @@ Issues live at docs/issues/YYYY/MM/YYYY-MM-DD.md. This hook turns them into
     Welcome
     2026
       November
-        Nov 16
-        Nov 9
+        2026-11-16
+        2026-11-09
     ...
     Submit a link
     About
@@ -41,7 +41,7 @@ def on_config(config, **kwargs):
     years: dict[int, dict[int, list]] = {}
     for year, month, day, rel in issues:
         years.setdefault(year, {}).setdefault(month, []).append(
-            {f"{calendar.month_abbr[month]} {day}": rel}
+            {f"{year:04d}-{month:02d}-{day:02d}": rel}
         )
     for year, months in years.items():
         nav.append(
@@ -71,7 +71,7 @@ def on_page_markdown(markdown, page, **kwargs):
     return markdown.replace("{{ latest_issue }}", f"[{title}]({path})")
 
 
-# The sidebar labels issues by date ("Nov 9"), but the RSS feed should use the
+# The sidebar labels issues by date ("2026-11-09"), but the RSS feed should use the
 # real issue title. MkDocs runs on_page_content for every page before rendering
 # any of them, and the RSS plugin reads page.title there at priority -75. So
 # swap each issue's title in here, then restore all date labels before the

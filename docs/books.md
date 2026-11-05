@@ -30,7 +30,7 @@ No cover yet? Use this line instead of the <img ...> line:
 <div class="iw-books">
 
 <div class="iw-book iw-book--featured">
-  <div class="iw-cover iw-cover--placeholder"><span>Inference Engineering</span></div>
+  <img class="iw-cover" src="../assets/books/inference-engineering.jpg" alt="Cover of Inference Engineering by Philip Kiely">
   <div class="iw-book__body">
     <p class="iw-book__meta">Baseten Books · February 2026 · Free</p>
     <a class="iw-book__title" href="https://www.baseten.com/inference-engineering/">Inference Engineering</a>

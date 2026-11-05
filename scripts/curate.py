@@ -272,6 +272,11 @@ def main() -> int:
                 for source in sources:
                     results.append(fetch(source, since, keywords))
                     time.sleep(1.5)
+                # second pass for channels YouTube refused the first time
+                for i, (source, _, error) in enumerate(results):
+                    if error:
+                        time.sleep(10)
+                        results[i] = fetch(source, since, keywords)
             else:
                 results = list(pool.map(lambda s: fetch(s, since, keywords), sources))
             sections[heading] = [(s, items) for s, items, _ in results]

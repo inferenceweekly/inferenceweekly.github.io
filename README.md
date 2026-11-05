@@ -12,7 +12,7 @@ Built with [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)
 |---|---|
 | **Friday 09:00 (Istanbul)** | `curate.yml` scans every source in `curation/sources.yml` and opens a GitHub issue labelled `curation` with a checklist of the week's candidates |
 | **During the week** | Tick the items you want, and paste any extra links (articles, videos, repos) as comments on that issue |
-| **When you're done picking** | *Actions → Compile issue → Run workflow*: builds the issue file from your ticks and comment links, sorted into Read / Watch / Repos, and opens a pull request |
+| **When you're done picking** | *Actions → Compile issue → Run workflow*: builds the issue file from your ticks and comment links, sorted into Read / Watch / Repos, leaves out links already shared in an earlier issue (listed in the PR), and opens a pull request |
 | **In the pull request** | Replace every `TODO:` with your own line, remove or reorder items, then merge |
 | **On merge** | The site and RSS feed update, a Buttondown **draft** is created, and the curation issue closes |
 | **Monday morning** | Review the draft in Buttondown and press send |

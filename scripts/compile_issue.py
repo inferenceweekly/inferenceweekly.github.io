@@ -2,8 +2,9 @@
 """Turn a curation issue into a draft newsletter issue.
 
 Collects every ticked item ("- [x] [Title](url)") from the curation issue body
-and every link posted in its comments, sorts them into Read / Watch / Repos,
-and writes docs/issues/YYYY/MM/YYYY-MM-DD.md using the usual front matter.
+and every link posted in its comments, leaves out anything already shared in an
+earlier issue, sorts the rest into Read / Watch / Repos, and writes
+docs/issues/YYYY/MM/YYYY-MM-DD.md using the usual front matter.
 
 Usage:
     python scripts/compile_issue.py --body body.md --comments comments.json \
@@ -131,14 +132,76 @@ def _comment_item(title: str | None, url: str, lookup_titles: bool) -> dict:
     }
 
 
+TRACKING_PARAMS = re.compile(r"^(utm_.*|ref|ref_src|fbclid|gclid|mc_cid|mc_eid|si)$", re.I)
+ISSUE_LINK = re.compile(r"\]\((https?://[^)\s]+)\)")
+
+
+def normalize(url: str) -> str:
+    """Canonical form of a URL so the same page matches however it was pasted."""
+    parts = urllib.parse.urlsplit(url.strip())
+    host = parts.netloc.lower().removeprefix("www.").removeprefix("m.")
+    path = parts.path.rstrip("/") or "/"
+    query = [
+        (k, v)
+        for k, v in urllib.parse.parse_qsl(parts.query, keep_blank_values=True)
+        if not TRACKING_PARAMS.match(k)
+    ]
+    if host == "youtu.be":  # youtu.be/ID -> youtube.com/watch?v=ID
+        host, query, path = "youtube.com", [("v", path.strip("/"))], "/watch"
+    if host == "youtube.com" and path == "/watch":
+        query = [(k, v) for k, v in query if k == "v"]
+    return urllib.parse.urlunsplit(("https", host, path, urllib.parse.urlencode(sorted(query)), ""))
+
+
+def published_links() -> dict[str, dict]:
+    """Every external link in already-published issues: normalized URL -> where it appeared."""
+    found: dict[str, dict] = {}
+    for path in sorted(ISSUES.rglob("*.md")):
+        text = path.read_text(encoding="utf-8")
+        number = re.search(r"^number:\s*(\d+)", text, re.M)
+        date = re.search(r"^date:\s*(\S+)", text, re.M)
+        where = {
+            "number": int(number.group(1)) if number else None,
+            "date": date.group(1) if date else path.stem,
+            "path": path.relative_to(ROOT).as_posix(),
+        }
+        for url in ISSUE_LINK.findall(text):
+            found.setdefault(normalize(url), where)
+    return found
+
+
 def dedupe(items: list[dict]) -> list[dict]:
     seen, out = set(), []
     for item in items:
-        key = item["url"].rstrip("/")
+        key = normalize(item["url"])
         if key not in seen:
             seen.add(key)
             out.append(item)
     return out
+
+
+def split_already_shared(items: list[dict]) -> tuple[list[dict], list[tuple[dict, dict]]]:
+    published = published_links()
+    fresh, repeats = [], []
+    for item in items:
+        where = published.get(normalize(item["url"]))
+        if where:
+            repeats.append((item, where))
+        else:
+            fresh.append(item)
+    return fresh, repeats
+
+
+def repeats_report(repeats: list[tuple[dict, dict]]) -> str:
+    if not repeats:
+        return ""
+    lines = ["**Skipped, already shared in an earlier issue:**", ""]
+    for item, where in repeats:
+        issue = f"#{where['number']}" if where["number"] is not None else where["path"]
+        lines.append(f"- [{item['title']}]({item['url']}): {issue} ({where['date']})")
+    lines.append("")
+    lines.append("To include one anyway, add it to the issue file in this pull request.")
+    return "\n".join(lines) + "\n"
 
 
 def render(items: list[dict], date: dt.date, number: int, title: str) -> str:
@@ -184,6 +247,7 @@ def main() -> int:
     parser.add_argument("--title", default="This week in inference")
     parser.add_argument("--date", help="Publish date YYYY-MM-DD (default: next Monday)")
     parser.add_argument("--no-lookup", action="store_true", help="Don't fetch titles for bare URLs")
+    parser.add_argument("--report", help="Write a Markdown list of skipped repeats to this file")
     args = parser.parse_args()
 
     body = pathlib.Path(args.body).read_text(encoding="utf-8")
@@ -191,6 +255,16 @@ def main() -> int:
     items = dedupe(from_body(body) + from_comments(comments, not args.no_lookup))
     if not items:
         print("No ticked items or comment links found in the curation issue.", file=sys.stderr)
+        return 1
+
+    items, repeats = split_already_shared(items)
+    report = repeats_report(repeats)
+    if args.report:
+        pathlib.Path(args.report).write_text(report, encoding="utf-8")
+    for item, where in repeats:
+        print(f"Skipping (already in #{where['number']}, {where['date']}): {item['url']}", file=sys.stderr)
+    if not items:
+        print("Every selected link was already shared in an earlier issue.", file=sys.stderr)
         return 1
 
     date = dt.date.fromisoformat(args.date) if args.date else next_monday(dt.date.today())
@@ -203,7 +277,11 @@ def main() -> int:
     target.write_text(render(items, date, next_number(), args.title), encoding="utf-8")
     counts = {k: sum(i["kind"] == k for i in items) for k in ("read", "watch", "repos")}
     print(target.relative_to(ROOT))
-    print(f"read={counts['read']} watch={counts['watch']} repos={counts['repos']}", file=sys.stderr)
+    print(
+        f"read={counts['read']} watch={counts['watch']} repos={counts['repos']} "
+        f"skipped_repeats={len(repeats)}",
+        file=sys.stderr,
+    )
     return 0
 
 

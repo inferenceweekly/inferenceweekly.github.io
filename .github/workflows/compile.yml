@@ -2,6 +2,7 @@ name: Compile issue
 
 # Turns the curation issue into a draft newsletter issue:
 #   ticked checkboxes + links posted in the comments
+#   -> links already shared in an earlier issue are left out (listed in the PR)
 #   -> docs/issues/YYYY/MM/YYYY-MM-DD.md, sorted into Read / Watch / Repos
 #   -> opened as a pull request for you to add notes, review and merge.
 # Merging the PR publishes the site and creates the Buttondown draft.
@@ -62,11 +63,12 @@ jobs:
           TITLE: ${{ github.event.inputs.title }}
           DATE: ${{ github.event.inputs.date }}
         run: |
-          args=(--body body.md --comments comments.json --title "$TITLE")
+          args=(--body body.md --comments comments.json --title "$TITLE" --report repeats.md)
           [ -n "$DATE" ] && args+=(--date "$DATE")
           file=$(python scripts/compile_issue.py "${args[@]}")
           echo "file=$file" >> "$GITHUB_OUTPUT"
           echo "Created $file"
+          if [ -s repeats.md ]; then cat repeats.md >> "$GITHUB_STEP_SUMMARY"; fi
 
       - name: Open pull request
         env:
@@ -93,6 +95,10 @@ jobs:
           Closes #$NUMBER
           EOF
           sed -i 's/^          //' pr_body.md
+          if [ -s repeats.md ]; then
+            printf '\n---\n\n' >> pr_body.md
+            cat repeats.md >> pr_body.md
+          fi
           url=$(gh pr create --base main --head "$branch" --title "Issue: $TITLE ($(basename "$FILE" .md))" --body-file pr_body.md)
           gh issue comment "$NUMBER" --body "Compiled into $url"
           echo "### Pull request opened: $url" >> "$GITHUB_STEP_SUMMARY"

@@ -35,7 +35,7 @@ jobs:
         run: python scripts/curate.py --days "${{ github.event.inputs.days || '7' }}" -o candidates.md
       - name: Show results (dry run)
         if: github.event.inputs.dry_run == 'true'
-        run: cat candidates.md >> "$GITHUB_STEP_SUMMARY"
+        run: tee -a "$GITHUB_STEP_SUMMARY" < candidates.md
       - name: Open triage issue
         if: github.event.inputs.dry_run != 'true'
         env:

@@ -21,6 +21,7 @@ import os
 import pathlib
 import re
 import sys
+import time
 import urllib.parse
 from concurrent.futures import ThreadPoolExecutor
 
@@ -42,6 +43,7 @@ FEED_LINK = re.compile(
 HREF = re.compile(r"\bhref=[\"']([^\"']+)[\"']", re.I)
 YT_CHANNEL_ID = re.compile(r'"(?:externalId|channelId)"\s*:\s*"(UC[\w-]{22})"')
 YT_CANONICAL = re.compile(r"/channel/(UC[\w-]{22})")
+COMMON_FEED_PATHS = ["rss/", "feed/", "rss.xml", "feed.xml", "atom.xml", "index.xml", "feed"]
 MD_LINK = re.compile(r"(?<!!)\[([^\]]+)\]\((https?://[^)\s]+)\)")
 
 
@@ -70,8 +72,28 @@ def http_get(url: str, **kwargs) -> requests.Response:
     return requests.get(url, headers=headers, cookies=cookies, timeout=HTTP_TIMEOUT, **kwargs)
 
 
+def parse_feed(url: str, attempts: int = 3):
+    """Download and parse a feed, retrying briefly on server errors (YouTube's feed
+    endpoint fails intermittently). Returns a feedparser result or None."""
+    for attempt in range(attempts):
+        try:
+            response = http_get(url)
+            if response.status_code < 400:
+                feed = feedparser.parse(response.content)
+                if feed.get("version"):  # recognised RSS/Atom (HTML pages have none)
+                    return feed
+                return None  # a web page, not a feed
+            if response.status_code not in (404, 429) and response.status_code < 500:
+                return None
+        except requests.RequestException:
+            pass
+        if attempt < attempts - 1:
+            time.sleep(2 * (attempt + 1))
+    return None
+
+
 def discover_feed(page_url: str) -> str | None:
-    """Find the RSS/Atom feed advertised by a web page (blog index, YouTube channel...)."""
+    """Find the RSS/Atom feed for a web page (blog index, YouTube channel...)."""
     response = http_get(page_url)
     response.raise_for_status()
     page = response.text
@@ -82,24 +104,34 @@ def discover_feed(page_url: str) -> str | None:
     if "youtube.com" in host:
         if match := (YT_CHANNEL_ID.search(page) or YT_CANONICAL.search(page)):
             return f"https://www.youtube.com/feeds/videos.xml?channel_id={match.group(1)}"
+        return None
+    # No advertised feed: try the usual locations next to the page, then at the site root.
+    base = response.url if response.url.endswith("/") else response.url + "/"
+    root = urllib.parse.urljoin(response.url, "/")
+    for candidate in dict.fromkeys(
+        [urllib.parse.urljoin(base, p) for p in COMMON_FEED_PATHS]
+        + [urllib.parse.urljoin(root, p) for p in COMMON_FEED_PATHS]
+    ):
+        feed = parse_feed(candidate, attempts=1)
+        if feed is not None and feed.entries:
+            return candidate
     return None
 
 
 def load_feed(url: str):
     """Parse url as a feed; if it's a web page instead, discover its feed and parse that."""
-    feed = feedparser.parse(url, agent=USER_AGENT)
-    if feed.entries:
+    feed = parse_feed(url, attempts=1)
+    if feed is not None:
         return feed, None
     try:
         found = discover_feed(url)
     except requests.RequestException as exc:
         return None, f"could not open page ({exc.__class__.__name__})"
     if not found:
-        reason = feed.get("bozo_exception") or "no entries and no feed link on the page"
-        return None, f"no feed found ({reason})"
-    feed = feedparser.parse(found, agent=USER_AGENT)
-    if feed.get("bozo") and not feed.entries:
-        return None, f"found {found} but could not read it"
+        return None, "no feed found on the page or at the usual feed addresses"
+    feed = parse_feed(found)
+    if feed is None:
+        return None, f"found {found} but it did not respond (will retry next run)"
     return feed, None
 
 

@@ -88,7 +88,7 @@ def parse_feed(url: str, attempts: int = 3):
         except requests.RequestException:
             pass
         if attempt < attempts - 1:
-            time.sleep(2 * (attempt + 1))
+            time.sleep(3 * (attempt + 1))
     return None
 
 
@@ -129,7 +129,7 @@ def load_feed(url: str):
         return None, f"could not open page ({exc.__class__.__name__})"
     if not found:
         return None, "no feed found on the page or at the usual feed addresses"
-    feed = parse_feed(found)
+    feed = parse_feed(found, attempts=5 if "youtube.com" in found else 3)
     if feed is None:
         return None, f"found {found} but it did not respond (will retry next run)"
     return feed, None
@@ -266,7 +266,14 @@ def main() -> int:
     errors: list[str] = []
     with ThreadPoolExecutor(max_workers=8) as pool:
         for heading, sources in feed_groups.items():
-            results = list(pool.map(lambda s: fetch(s, since, keywords), sources))
+            if heading == "Videos":
+                # YouTube throttles parallel requests: one channel at a time, short pause
+                results = []
+                for source in sources:
+                    results.append(fetch(source, since, keywords))
+                    time.sleep(1.5)
+            else:
+                results = list(pool.map(lambda s: fetch(s, since, keywords), sources))
             sections[heading] = [(s, items) for s, items, _ in results]
             errors += [f"{s['name']}: {e}" for s, _, e in results if e]
         results = list(pool.map(lambda r: fetch_releases(r, since), config.get("repos") or []))

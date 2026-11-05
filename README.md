@@ -32,8 +32,11 @@ You can still write an issue by hand with `python scripts/new_issue.py "Title"`.
    *Settings → API* → copy the key → add it to the repo as the secret
    `BUTTONDOWN_API_KEY` (*Settings → Secrets and variables → Actions*).
    Without the secret the draft workflow simply skips.
-5. **Add YouTube channels** to `curation/sources.yml` (instructions inside),
-   and check the first curation issue for any feeds marked as failed.
+5. **Sources** live in `curation/sources.yml`. A source can be a feed URL or just
+   a page: a blog index or a YouTube channel (`https://www.youtube.com/@handle`)
+   works, and the script finds the feed itself. Curated GitHub lists go under
+   `lists:` and report newly added links. To test sources without opening an
+   issue: *Actions → Weekly curation → Run workflow* with **Dry run** ticked.
 6. Optional: *Actions → Weekly curation → Run workflow* to get a first batch now.
 
 ## Local development

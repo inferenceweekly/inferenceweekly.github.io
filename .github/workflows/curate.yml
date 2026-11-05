@@ -10,6 +10,10 @@ on:
       days:
         description: "How many days back to look"
         default: "7"
+      dry_run:
+        description: "Dry run: only show the results in the run summary, don't open an issue"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -25,8 +29,15 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
-      - run: python scripts/curate.py --days "${{ github.event.inputs.days || '7' }}" -o candidates.md
+      - name: Collect candidates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/curate.py --days "${{ github.event.inputs.days || '7' }}" -o candidates.md
+      - name: Show results (dry run)
+        if: github.event.inputs.dry_run == 'true'
+        run: cat candidates.md >> "$GITHUB_STEP_SUMMARY"
       - name: Open triage issue
+        if: github.event.inputs.dry_run != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

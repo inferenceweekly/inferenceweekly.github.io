@@ -1,11 +1,13 @@
 # Sources scanned weekly by scripts/curate.py.
 #
-# filter: true  -> only keep items whose title/summary match `keywords`
-#                  (use for broad feeds like NVIDIA, Hugging Face, arXiv, HN)
-# filter: false -> keep everything (use for inference-only sources)
+# url can be a feed OR a normal page (blog index, YouTube channel @handle):
+# the script finds the page's RSS link itself.
 #
-# Feed URLs marked "verify" are best guesses; the weekly job reports any feed
-# that fails so you can fix or remove it.
+# filter: true  -> only keep items whose title/summary match `keywords`
+#                  (use for broad sources like NVIDIA, Hugging Face, arXiv, HN)
+# filter: false -> keep everything (use for inference/agent-focused sources)
+#
+# The weekly curation issue lists any source that fails, so you can fix it.
 
 keywords:
   - inference
@@ -40,16 +42,25 @@ keywords:
   - dynamo
   - kserve
   - autoscal
+  - agent
+  - mcp
+  - llm
 
 articles:
   - name: vLLM Blog
-    url: https://blog.vllm.ai/feed.xml          # verify
+    url: https://vllm.ai/blog
     filter: false
   - name: LMSYS / SGLang Blog
-    url: https://lmsys.org/rss.xml              # verify
+    url: https://lmsys.org/blog/
     filter: false
+  - name: inference.net Blog
+    url: https://inference.net/blog/
+    filter: false
+  - name: Red Hat Developer
+    url: https://developers.redhat.com/blog/feed
+    filter: true
   - name: PyTorch Blog
-    url: https://pytorch.org/feed/              # verify
+    url: https://pytorch.org/blog/
     filter: true
   - name: Hugging Face Blog
     url: https://huggingface.co/blog/feed.xml
@@ -61,7 +72,7 @@ articles:
     url: https://newsletter.pragmaticengineer.com/feed
     filter: true
   - name: SemiAnalysis
-    url: https://newsletter.semianalysis.com/feed   # verify
+    url: https://newsletter.semianalysis.com/feed
     filter: true
   - name: Hacker News (50+ points)
     url: https://hnrss.org/newest?q=vllm+OR+sglang+OR+%22llm+inference%22+OR+%22inference+engine%22&points=50
@@ -75,15 +86,32 @@ papers:
     url: https://rss.arxiv.org/rss/cs.LG
     filter: true
 
-# YouTube: every channel has a feed at
-#   https://www.youtube.com/feeds/videos.xml?channel_id=<CHANNEL_ID>
-# Find the ID on the channel page (About -> Share channel -> Copy channel ID)
-# and add entries like the commented example below. Good channels to add:
-# GPU MODE, vLLM, PyTorch, Anyscale (Ray Summit), CNCF, NVIDIA Developer.
-videos: []
-#  - name: GPU MODE
-#    url: https://www.youtube.com/feeds/videos.xml?channel_id=REPLACE_ME
-#    filter: false
+# YouTube channels: paste the channel URL (https://www.youtube.com/@handle).
+videos:
+  - name: AI Engineer
+    url: https://www.youtube.com/@aiDotEngineer
+    filter: false
+  - name: AAIF Agentic Conversations
+    url: https://www.youtube.com/@AAIFAgenticConversations
+    filter: false
+  - name: AAIF Live
+    url: https://www.youtube.com/@AAIFLive-x1r
+    filter: false
+  - name: Agentic AI Foundation
+    url: https://www.youtube.com/@AgenticAI-Foundation
+    filter: false
+  - name: LangChain
+    url: https://www.youtube.com/@LangChain
+    filter: false
+  - name: Baseten
+    url: https://www.youtube.com/@baseten
+    filter: false
+  - name: Caleb Writes Code
+    url: https://www.youtube.com/@CalebWritesCode
+    filter: false
+  - name: Andrej Karpathy
+    url: https://www.youtube.com/@AndrejKarpathy
+    filter: false
 
 # GitHub releases (Atom feed per repo). Pre-releases/nightlies are skipped.
 repos:
@@ -97,3 +125,9 @@ repos:
   - flashinfer-ai/flashinfer
   - vllm-project/production-stack
   - triton-lang/triton
+
+# Curated GitHub lists (awesome-lists and similar): each week the README is
+# compared with how it looked a week earlier and newly added links are listed.
+lists:
+  - name: AI Inference Resources (aerlabsAI)
+    repo: aerlabsAI/ai-inference-resources

@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 """Collect candidate links for the next issue from curation/sources.yml.
 
-Writes a Markdown checklist (articles, papers, videos, repo releases) that the
-weekly GitHub Action posts as a GitHub issue for triage.
+Writes a Markdown checklist (articles, papers, videos, repo releases and links
+newly added to curated GitHub lists) that the weekly GitHub Action posts as a
+GitHub issue for triage.
+
+A source URL can be a feed, or a normal web page such as a blog index or a
+YouTube channel (https://www.youtube.com/@handle): the script then finds the
+page's RSS/Atom link by itself.
 
 Usage:
     python scripts/curate.py                 # last 7 days, print to stdout
@@ -12,12 +17,15 @@ import argparse
 import calendar
 import datetime as dt
 import html
+import os
 import pathlib
 import re
 import sys
+import urllib.parse
 from concurrent.futures import ThreadPoolExecutor
 
 import feedparser
+import requests
 import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -26,6 +34,15 @@ USER_AGENT = "InferenceWeeklyCurator/1.0 (+https://inferenceweekly.github.io)"
 PRERELEASE = re.compile(r"(rc\d*|nightly|dev\d*|alpha|beta|pre-?release)\b", re.I)
 MAX_RELEASES_PER_REPO = 2
 MAX_ITEMS_PER_FEED = 15
+HTTP_TIMEOUT = 20
+
+FEED_LINK = re.compile(
+    r"<link\b[^>]*\btype=[\"']application/(?:rss|atom)\+xml[\"'][^>]*>", re.I
+)
+HREF = re.compile(r"\bhref=[\"']([^\"']+)[\"']", re.I)
+YT_CHANNEL_ID = re.compile(r'"(?:externalId|channelId)"\s*:\s*"(UC[\w-]{22})"')
+YT_CANONICAL = re.compile(r"/channel/(UC[\w-]{22})")
+MD_LINK = re.compile(r"(?<!!)\[([^\]]+)\]\((https?://[^)\s]+)\)")
 
 
 def published(entry) -> dt.datetime | None:
@@ -47,10 +64,49 @@ def matches(entry, keywords: list[str]) -> bool:
     return any(k.lower() in haystack for k in keywords)
 
 
-def fetch(source: dict, since: dt.datetime, keywords: list[str]) -> tuple[dict, list, str | None]:
-    feed = feedparser.parse(source["url"], agent=USER_AGENT)
+def http_get(url: str, **kwargs) -> requests.Response:
+    headers = {"User-Agent": USER_AGENT, "Accept-Language": "en", **kwargs.pop("headers", {})}
+    cookies = {"CONSENT": "YES+1", "SOCS": "CAI"}  # skip YouTube's cookie-consent page
+    return requests.get(url, headers=headers, cookies=cookies, timeout=HTTP_TIMEOUT, **kwargs)
+
+
+def discover_feed(page_url: str) -> str | None:
+    """Find the RSS/Atom feed advertised by a web page (blog index, YouTube channel...)."""
+    response = http_get(page_url)
+    response.raise_for_status()
+    page = response.text
+    for tag in FEED_LINK.findall(page):
+        if href := HREF.search(tag):
+            return urllib.parse.urljoin(response.url, html.unescape(href.group(1)))
+    host = urllib.parse.urlparse(response.url).netloc
+    if "youtube.com" in host:
+        if match := (YT_CHANNEL_ID.search(page) or YT_CANONICAL.search(page)):
+            return f"https://www.youtube.com/feeds/videos.xml?channel_id={match.group(1)}"
+    return None
+
+
+def load_feed(url: str):
+    """Parse url as a feed; if it's a web page instead, discover its feed and parse that."""
+    feed = feedparser.parse(url, agent=USER_AGENT)
+    if feed.entries:
+        return feed, None
+    try:
+        found = discover_feed(url)
+    except requests.RequestException as exc:
+        return None, f"could not open page ({exc.__class__.__name__})"
+    if not found:
+        reason = feed.get("bozo_exception") or "no entries and no feed link on the page"
+        return None, f"no feed found ({reason})"
+    feed = feedparser.parse(found, agent=USER_AGENT)
     if feed.get("bozo") and not feed.entries:
-        return source, [], str(feed.get("bozo_exception", "unreadable feed"))
+        return None, f"found {found} but could not read it"
+    return feed, None
+
+
+def fetch(source: dict, since: dt.datetime, keywords: list[str]) -> tuple[dict, list, str | None]:
+    feed, error = load_feed(source["url"])
+    if error:
+        return source, [], error
     items = []
     for entry in feed.entries:
         when = published(entry)
@@ -76,6 +132,49 @@ def fetch_releases(repo: str, since: dt.datetime) -> tuple[dict, list, str | Non
     _, items, error = fetch(source, since, [])
     items = [i for i in items if not PRERELEASE.search(i["title"])][:MAX_RELEASES_PER_REPO]
     return source, items, error
+
+
+def github_api(endpoint: str, **params):
+    headers = {"Accept": "application/vnd.github+json"}
+    if token := os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN"):
+        headers["Authorization"] = f"Bearer {token}"
+    response = http_get(f"https://api.github.com/{endpoint}", headers=headers, params=params)
+    response.raise_for_status()
+    return response.json()
+
+
+def raw_file(repo: str, ref: str, path: str) -> str:
+    response = http_get(f"https://raw.githubusercontent.com/{repo}/{ref}/{path}")
+    response.raise_for_status()
+    return response.text
+
+
+def links_in(markdown: str) -> dict[str, str]:
+    """url -> link text for every non-image Markdown link."""
+    return {url.rstrip("/"): text.strip() for text, url in MD_LINK.findall(markdown)}
+
+
+def fetch_list_additions(entry: dict, since: dt.datetime) -> tuple[dict, list, str | None]:
+    """Links added to a curated list (a GitHub repo's README) since `since`."""
+    repo = entry["repo"]
+    path = entry.get("path", "README.md")
+    source = {"name": entry.get("name", repo), "url": f"https://github.com/{repo}"}
+    try:
+        branch = github_api(f"repos/{repo}")["default_branch"]
+        before = github_api(
+            f"repos/{repo}/commits", sha=branch, path=path,
+            until=since.strftime("%Y-%m-%dT%H:%M:%SZ"), per_page=1,
+        )
+        now = links_in(raw_file(repo, branch, path))
+        old = links_in(raw_file(repo, before[0]["sha"], path)) if before else {}
+    except (requests.RequestException, KeyError, IndexError) as exc:
+        return source, [], f"could not compare {path} ({exc.__class__.__name__})"
+    added = [url for url in now if url not in old]
+    items = [
+        {"title": clean(now[url], 140), "link": url, "date": "", "summary": ""}
+        for url in added[:MAX_ITEMS_PER_FEED]
+    ]
+    return source, items, None
 
 
 def render(sections: dict[str, list], errors: list[str], since: dt.datetime) -> str:
@@ -140,6 +239,9 @@ def main() -> int:
             errors += [f"{s['name']}: {e}" for s, _, e in results if e]
         results = list(pool.map(lambda r: fetch_releases(r, since), config.get("repos") or []))
         sections["Repo releases"] = [(s, items) for s, items, _ in results]
+        errors += [f"{s['name']}: {e}" for s, _, e in results if e]
+        results = list(pool.map(lambda l: fetch_list_additions(l, since), config.get("lists") or []))
+        sections["New in curated lists"] = [(s, items) for s, items, _ in results]
         errors += [f"{s['name']}: {e}" for s, _, e in results if e]
 
     markdown = render(sections, errors, since)

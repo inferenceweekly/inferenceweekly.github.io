@@ -224,3 +224,9 @@
     padding: 1rem 0.6rem;
   }
 }
+
+/* Real covers keep their own proportions; only placeholders are fixed 2:3 */
+.md-typeset img.iw-cover {
+  aspect-ratio: auto;
+  height: auto;
+}

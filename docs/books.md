@@ -41,7 +41,7 @@ No cover yet? Use this line instead of the <img ...> line:
 </div>
 
 <div class="iw-book">
-  <div class="iw-cover iw-cover--placeholder"><span>Hands-On LLM Serving and Optimization</span></div>
+  <img class="iw-cover" src="../assets/books/hands-on-llm-serving.jpg" alt="Cover of Hands-On LLM Serving and Optimization by Chi Wang and Peiheng Hu">
   <div class="iw-book__body">
     <p class="iw-book__meta">O'Reilly · April 2026</p>
     <a class="iw-book__title" href="https://www.oreilly.com/library/view/-/9798341621480/">Hands-On LLM Serving and Optimization</a>

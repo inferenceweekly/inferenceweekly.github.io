@@ -36,7 +36,7 @@ def to_email(body: str, url: str) -> str:
     body = re.sub(r"^# .*\n+", "", body.lstrip(), count=1)          # title becomes the subject
     body = re.sub(r":material-[a-z0-9-]+:\s*", "", body)    # site-only icons
     body = re.sub(r"\]\((?:\.\./)+submit\.md\)", f"]({SITE}/submit/)", body)
-    header = f"*[Read this issue on the web]({url})*\n\n"
+    header = f"*[Read this weekly on the web]({url})*\n\n"
     return header + body.strip() + "\n"
 
 

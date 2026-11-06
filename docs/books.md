@@ -41,12 +41,112 @@ No cover yet? Use this line instead of the <img ...> line:
 </div>
 
 <div class="iw-book">
+  <div class="iw-cover iw-cover--placeholder"><span>Evals for AI Engineers</span></div>
+  <div class="iw-book__body">
+    <p class="iw-book__meta">O'Reilly · October 2026</p>
+    <a class="iw-book__title" href="https://www.oreilly.com/library/view/evals-for-ai/9798341660717/">Evals for AI Engineers</a>
+    <p class="iw-book__authors">by Shreya Shankar &amp; Hamel Husain</p>
+    <p class="iw-book__note">A framework for testing, measuring and improving LLM applications: error analysis, code-based checks, LLM judges, human review and regression monitoring in production.</p>
+  </div>
+</div>
+
+<div class="iw-book">
+  <div class="iw-cover iw-cover--placeholder"><span>Claude at Work</span></div>
+  <div class="iw-book__body">
+    <p class="iw-book__meta">Manning · Early access, September 2026</p>
+    <a class="iw-book__title" href="https://www.manning.com/books/claude-at-work">Claude at Work</a>
+    <p class="iw-book__authors">by Elton Stoneman</p>
+    <p class="iw-book__note">AI-assisted software development with Claude Code and Claude Cowork: parallel workstreams, BDD and TDD, reusable skills, token costs and custom DevOps agents.</p>
+  </div>
+</div>
+
+<div class="iw-book">
+  <div class="iw-cover iw-cover--placeholder"><span>Building Reliable AI Systems</span></div>
+  <div class="iw-book__body">
+    <p class="iw-book__meta">Manning · August 2026</p>
+    <a class="iw-book__title" href="https://www.manning.com/books/building-reliable-ai-systems">Building Reliable AI Systems</a>
+    <p class="iw-book__authors">by Rush Shahani</p>
+    <p class="iw-book__note">How to take an AI prototype to a dependable production system, with a three-layer framework covering outputs, agents and operations. For Python engineers and data scientists.</p>
+  </div>
+</div>
+
+<div class="iw-book">
+  <div class="iw-cover iw-cover--placeholder"><span>Build an AI Agent (From Scratch)</span></div>
+  <div class="iw-book__body">
+    <p class="iw-book__meta">Manning · July 2026</p>
+    <a class="iw-book__title" href="https://www.manning.com/books/build-an-ai-agent-from-scratch">Build an AI Agent (From Scratch)</a>
+    <p class="iw-book__authors">by Jungjun Hur &amp; Younghee Song</p>
+    <p class="iw-book__note">Build a research agent in plain Python, without a framework: the agent loop, context engineering, RAG, memory, MCP, planning, multi-agent work over A2A and an LLM-as-a-judge eval pipeline.</p>
+  </div>
+</div>
+
+<div class="iw-book">
+  <div class="iw-cover iw-cover--placeholder"><span>AI Agents in Action, Second Edition</span></div>
+  <div class="iw-book__body">
+    <p class="iw-book__meta">Manning · June 2026</p>
+    <a class="iw-book__title" href="https://www.manning.com/books/ai-agents-in-action-second-edition">AI Agents in Action, Second Edition</a>
+    <p class="iw-book__authors">by Micheal Lanham</p>
+    <p class="iw-book__note">Intelligent workflows with LLMs, MCP and A2A, plus containerized deployment and voice agent orchestration. A heavily revised second edition.</p>
+  </div>
+</div>
+
+<div class="iw-book">
   <img class="iw-cover" src="../assets/books/hands-on-llm-serving.jpg" alt="Cover of Hands-On LLM Serving and Optimization by Chi Wang and Peiheng Hu">
   <div class="iw-book__body">
     <p class="iw-book__meta">O'Reilly · April 2026</p>
     <a class="iw-book__title" href="https://www.oreilly.com/library/view/-/9798341621480/">Hands-On LLM Serving and Optimization</a>
     <p class="iw-book__authors">by Chi Wang &amp; Peiheng Hu</p>
     <p class="iw-book__note">A practical guide to hosting LLMs at scale: how to design a model-serving system and make it faster and cheaper to run. For engineers building inference infrastructure or the applications on top of it.</p>
+  </div>
+</div>
+
+<div class="iw-book">
+  <div class="iw-cover iw-cover--placeholder"><span>30 Agents Every AI Engineer Must Build</span></div>
+  <div class="iw-book__body">
+    <p class="iw-book__meta">Packt · March 2026</p>
+    <a class="iw-book__title" href="https://www.packtpub.com/product/30AgentsEveryAIEngineerMustBuild/9781806109012">30 Agents Every AI Engineer Must Build</a>
+    <p class="iw-book__authors">by Imran Ahmad</p>
+    <p class="iw-book__note">Thirty agent architectures, from foundational to domain-specific, built with LangChain and LangGraph, with coverage of evaluation and reliability testing.</p>
+  </div>
+</div>
+
+<div class="iw-book">
+  <div class="iw-cover iw-cover--placeholder"><span>Distributed AI Systems</span></div>
+  <div class="iw-book__body">
+    <p class="iw-book__meta">Packt · 2026</p>
+    <a class="iw-book__title" href="https://www.tenlong.com.tw/products/9781807301712">Distributed AI Systems</a>
+    <p class="iw-book__authors">by Fuheng Wu</p>
+    <p class="iw-book__note">A practical path from distributed training to inference and serving: GPU parallelism, PyTorch DDP and FSDP, DeepSpeed, vLLM and SGLang, Kubernetes serving and benchmarking.</p>
+  </div>
+</div>
+
+<div class="iw-book">
+  <div class="iw-cover iw-cover--placeholder"><span>Agentic Architectural Patterns for Building Multi-Agent Systems</span></div>
+  <div class="iw-book__body">
+    <p class="iw-book__meta">Packt · January 2026</p>
+    <a class="iw-book__title" href="https://www.oreilly.com/library/view/-/9781806029570">Agentic Architectural Patterns for Building Multi-Agent Systems</a>
+    <p class="iw-book__authors">by Ali Arsanjani &amp; Juan Pablo Bustos</p>
+    <p class="iw-book__note">Design patterns for multi-agent systems: orchestration, fault tolerance and human-agent interaction, across function calling, MCP and A2A, with examples in Google ADK, LangGraph and CrewAI.</p>
+  </div>
+</div>
+
+<div class="iw-book">
+  <div class="iw-cover iw-cover--placeholder"><span>Agentic AI Handbook: Design Patterns</span></div>
+  <div class="iw-book__body">
+    <p class="iw-book__meta">Design Agentic LLC · March 2025</p>
+    <a class="iw-book__title" href="https://www.amazon.com/Agentic-AI-Handbook-Patterns-Delivers-ebook/dp/B0F1HL22QS">Agentic AI Handbook: Design Patterns</a>
+    <p class="iw-book__authors">by Mark Lane</p>
+    <p class="iw-book__note">A catalog of agent design patterns for reasoning, reliability and multi-agent orchestration, including validation and guardrail patterns.</p>
+  </div>
+</div>
+
+<div class="iw-book">
+  <div class="iw-cover iw-cover--placeholder"><span>Build a Large Language Model (From Scratch)</span></div>
+  <div class="iw-book__body">
+    <p class="iw-book__meta">Manning · October 2024</p>
+    <a class="iw-book__title" href="https://www.manning.com/books/build-a-large-language-model-from-scratch">Build a Large Language Model (From Scratch)</a>
+    <p class="iw-book__authors">by Sebastian Raschka</p>
+    <p class="iw-book__note">Build a GPT-style model step by step in PyTorch, from text data and attention to pretraining and fine-tuning. Runs on a laptop.</p>
   </div>
 </div>
 

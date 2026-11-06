@@ -104,7 +104,7 @@ No cover yet? Use this line instead of the <img ...> line:
   <img class="iw-cover" src="../assets/books/distributed-ai-systems.jpg" alt="Cover of Distributed AI Systems">
   <div class="iw-book__body">
     <p class="iw-book__meta">Packt · 2026</p>
-    <a class="iw-book__title" href="https://www.tenlong.com.tw/products/9781807301712">Distributed AI Systems</a>
+    <a class="iw-book__title" href="https://learning.oreilly.com/library/view/distributed-ai-systems/9781807301712/">Distributed AI Systems</a>
     <p class="iw-book__authors">by Fuheng Wu</p>
     <p class="iw-book__note">A practical path from distributed training to inference and serving: GPU parallelism, PyTorch DDP and FSDP, DeepSpeed, vLLM and SGLang, Kubernetes serving and benchmarking.</p>
   </div>

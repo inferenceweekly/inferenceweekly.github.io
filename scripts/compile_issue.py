@@ -207,7 +207,7 @@ def repeats_report(repeats: list[tuple[dict, dict]]) -> str:
 def render(items: list[dict], date: dt.date, number: int, title: str) -> str:
     def line(item: dict) -> str:
         source = f", *{item['source']}*" if item["source"] else ""
-        return f"- **[{item['title']}]({item['url']})**{source}. {NOTE}"
+        return f"- **[{item['title']}]({item['url']})**{source}.\n    - {NOTE}"
 
     sections = [
         ("read", ":material-book-open-variant: Read"),

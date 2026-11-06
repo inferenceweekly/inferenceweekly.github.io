@@ -223,8 +223,6 @@ def render(items: list[dict], date: dt.date, number: int, title: str) -> str:
         "",
         f"# #{number}: {title}",
         "",
-        "TODO: one-sentence summary of this week's theme.",
-        "",
     ]
     for kind, heading in sections:
         chosen = [i for i in items if i["kind"] == kind]

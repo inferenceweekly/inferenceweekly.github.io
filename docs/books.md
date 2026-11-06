@@ -41,7 +41,7 @@ No cover yet? Use this line instead of the <img ...> line:
 </div>
 
 <div class="iw-book">
-  <div class="iw-cover iw-cover--placeholder"><span>Evals for AI Engineers</span></div>
+  <img class="iw-cover" src="../assets/books/evals-for-ai-engineers.jpg" alt="Cover of Evals for AI Engineers">
   <div class="iw-book__body">
     <p class="iw-book__meta">O'Reilly · October 2026</p>
     <a class="iw-book__title" href="https://www.oreilly.com/library/view/evals-for-ai/9798341660717/">Evals for AI Engineers</a>
@@ -51,17 +51,7 @@ No cover yet? Use this line instead of the <img ...> line:
 </div>
 
 <div class="iw-book">
-  <div class="iw-cover iw-cover--placeholder"><span>Claude at Work</span></div>
-  <div class="iw-book__body">
-    <p class="iw-book__meta">Manning · Early access, September 2026</p>
-    <a class="iw-book__title" href="https://www.manning.com/books/claude-at-work">Claude at Work</a>
-    <p class="iw-book__authors">by Elton Stoneman</p>
-    <p class="iw-book__note">AI-assisted software development with Claude Code and Claude Cowork: parallel workstreams, BDD and TDD, reusable skills, token costs and custom DevOps agents.</p>
-  </div>
-</div>
-
-<div class="iw-book">
-  <div class="iw-cover iw-cover--placeholder"><span>Building Reliable AI Systems</span></div>
+  <img class="iw-cover" src="../assets/books/building-reliable-ai-systems.jpg" alt="Cover of Building Reliable AI Systems">
   <div class="iw-book__body">
     <p class="iw-book__meta">Manning · August 2026</p>
     <a class="iw-book__title" href="https://www.manning.com/books/building-reliable-ai-systems">Building Reliable AI Systems</a>
@@ -71,7 +61,7 @@ No cover yet? Use this line instead of the <img ...> line:
 </div>
 
 <div class="iw-book">
-  <div class="iw-cover iw-cover--placeholder"><span>Build an AI Agent (From Scratch)</span></div>
+  <img class="iw-cover" src="../assets/books/build-an-ai-agent.jpg" alt="Cover of Build an AI Agent (From Scratch)">
   <div class="iw-book__body">
     <p class="iw-book__meta">Manning · July 2026</p>
     <a class="iw-book__title" href="https://www.manning.com/books/build-an-ai-agent-from-scratch">Build an AI Agent (From Scratch)</a>
@@ -81,7 +71,7 @@ No cover yet? Use this line instead of the <img ...> line:
 </div>
 
 <div class="iw-book">
-  <div class="iw-cover iw-cover--placeholder"><span>AI Agents in Action, Second Edition</span></div>
+  <img class="iw-cover" src="../assets/books/ai-agents-in-action-2e.jpg" alt="Cover of AI Agents in Action, Second Edition">
   <div class="iw-book__body">
     <p class="iw-book__meta">Manning · June 2026</p>
     <a class="iw-book__title" href="https://www.manning.com/books/ai-agents-in-action-second-edition">AI Agents in Action, Second Edition</a>
@@ -101,7 +91,7 @@ No cover yet? Use this line instead of the <img ...> line:
 </div>
 
 <div class="iw-book">
-  <div class="iw-cover iw-cover--placeholder"><span>30 Agents Every AI Engineer Must Build</span></div>
+  <img class="iw-cover" src="../assets/books/30-agents-every-ai-engineer.jpg" alt="Cover of 30 Agents Every AI Engineer Must Build">
   <div class="iw-book__body">
     <p class="iw-book__meta">Packt · March 2026</p>
     <a class="iw-book__title" href="https://www.packtpub.com/product/30AgentsEveryAIEngineerMustBuild/9781806109012">30 Agents Every AI Engineer Must Build</a>
@@ -111,7 +101,7 @@ No cover yet? Use this line instead of the <img ...> line:
 </div>
 
 <div class="iw-book">
-  <div class="iw-cover iw-cover--placeholder"><span>Distributed AI Systems</span></div>
+  <img class="iw-cover" src="../assets/books/distributed-ai-systems.jpg" alt="Cover of Distributed AI Systems">
   <div class="iw-book__body">
     <p class="iw-book__meta">Packt · 2026</p>
     <a class="iw-book__title" href="https://www.tenlong.com.tw/products/9781807301712">Distributed AI Systems</a>
@@ -121,7 +111,7 @@ No cover yet? Use this line instead of the <img ...> line:
 </div>
 
 <div class="iw-book">
-  <div class="iw-cover iw-cover--placeholder"><span>Agentic Architectural Patterns for Building Multi-Agent Systems</span></div>
+  <img class="iw-cover" src="../assets/books/agentic-architectural-patterns.jpg" alt="Cover of Agentic Architectural Patterns for Building Multi-Agent Systems">
   <div class="iw-book__body">
     <p class="iw-book__meta">Packt · January 2026</p>
     <a class="iw-book__title" href="https://www.oreilly.com/library/view/-/9781806029570">Agentic Architectural Patterns for Building Multi-Agent Systems</a>
@@ -131,7 +121,7 @@ No cover yet? Use this line instead of the <img ...> line:
 </div>
 
 <div class="iw-book">
-  <div class="iw-cover iw-cover--placeholder"><span>Agentic AI Handbook: Design Patterns</span></div>
+  <img class="iw-cover" src="../assets/books/agentic-ai-handbook.jpg" alt="Cover of Agentic AI Handbook: Design Patterns">
   <div class="iw-book__body">
     <p class="iw-book__meta">Design Agentic LLC · March 2025</p>
     <a class="iw-book__title" href="https://www.amazon.com/Agentic-AI-Handbook-Patterns-Delivers-ebook/dp/B0F1HL22QS">Agentic AI Handbook: Design Patterns</a>
@@ -141,7 +131,7 @@ No cover yet? Use this line instead of the <img ...> line:
 </div>
 
 <div class="iw-book">
-  <div class="iw-cover iw-cover--placeholder"><span>Build a Large Language Model (From Scratch)</span></div>
+  <img class="iw-cover" src="../assets/books/build-a-large-language-model.jpg" alt="Cover of Build a Large Language Model (From Scratch)">
   <div class="iw-book__body">
     <p class="iw-book__meta">Manning · October 2024</p>
     <a class="iw-book__title" href="https://www.manning.com/books/build-a-large-language-model-from-scratch">Build a Large Language Model (From Scratch)</a>

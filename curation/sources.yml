@@ -53,6 +53,9 @@ articles:
   - name: LMSYS / SGLang Blog
     url: https://lmsys.org/blog/
     filter: false
+  - name: InferenceOps.io
+    url: https://inferenceops.io/
+    filter: false
   - name: inference.net Blog
     url: https://inference.net/blog/
     filter: false
